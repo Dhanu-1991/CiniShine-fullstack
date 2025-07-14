@@ -7,6 +7,7 @@ const router = express.Router();
 router.post("/payment", payment);
 router.post("/payment-verify", paymentVerify);
 router.post("/payment-webhook", paymentWebhook);
+//http://localhost:5000/api/v1/payments/payment-webhook
 router.post("/webhook", express.json({ type: "*/*" }), paymentWebhook); // 👈 necessary to read raw body
 
 export default router;

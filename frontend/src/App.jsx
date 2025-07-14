@@ -14,6 +14,7 @@ import PricingDefault from './Default/Body/PricingDefault.jsx';
 import { useState } from 'react';
 import Logout from './signedupUsers/Body/Logout.jsx';
 import Dashboard from './signedupUsers/Body/Dashboard.jsx';
+import PaymentStatus from './Default/Body/PaymentStatus.jsx';
 export default function App() {
   const { isAuthenticated } = useAuth();
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -48,6 +49,7 @@ export default function App() {
                   <Route path="/home" element={<Home />} />
                   <Route path="/pricing" element={<PricingDefault />} />
                   <Route path="/" element={<Navigate to="/home" />} />
+                  <Route path="/payment-status" element={<PaymentStatus />} />
                   <Route path="*" element={<Navigate to="/" />} />
             </>
           )}

@@ -1,3 +1,4 @@
+// src/components/PricingDefault.jsx
 import { Card, Button, Badge } from "flowbite-react";
 import axios from "axios";
 import { load } from "@cashfreepayments/cashfree-js";
@@ -5,40 +6,14 @@ import { useState, useEffect } from "react";
 
 export default function PricingDefault() {
   const [cashfree, setCashfree] = useState(null);
-  const [orderId, setOrderId] = useState("");
 
   useEffect(() => {
     const initializeSDK = async () => {
-      const cf = await load({ mode: "production" }); // use "production" for live
+      const cf = await load({ mode: "production" }); // or "sandbox" for test
       setCashfree(cf);
     };
     initializeSDK();
   }, []);
-
-  const getSessionId = async (price) => {
-    try {
-      const res = await axios.post("http://localhost:5000/api/v1/payments/payment", { price });
-      if (res.data?.payment_session_id) {
-        setOrderId(res.data.order_id);
-        return res.data.payment_session_id;
-      } else {
-        throw new Error("Session ID not received");
-      }
-    } catch (error) {
-      console.error("Get session failed:", error);
-    }
-  };
-
-  const verifyPayment = async (orderId) => {
-    try {
-      const res = await axios.post("http://localhost:5000/api/v1/payments/payment-verify", { orderId });
-      if (res.data) {
-        alert("✅ Payment Status: " + res.data.order_status);
-      }
-    } catch (error) {
-      console.error("Verification failed:", error);
-    }
-  };
 
   const onClickPricing = async (price) => {
     if (!cashfree) {
@@ -47,17 +22,23 @@ export default function PricingDefault() {
     }
 
     try {
-      console.log("Initiating payment for price:", price);
-      const sessionId = await getSessionId(price);
+      const res = await axios.post("http://localhost:5000/api/v1/payments/payment", { price });
+
+      if (!res.data?.payment_session_id || !res.data?.order_id) {
+        throw new Error("Failed to receive session ID or order ID.");
+      }
+
       const checkoutOptions = {
-        paymentSessionId: sessionId,
-        redirectTarget: "_self",
-      };
+  paymentSessionId: res.data.payment_session_id, // ✅ must match backend
+  redirectTarget: "_self",
+  returnUrl: `http://localhost:5173/payment-status?order_id=${res.data.order_id}`,
+};
+
 
       await cashfree.checkout(checkoutOptions);
-      await verifyPayment(orderId);
     } catch (error) {
       console.error("Payment initiation failed:", error);
+      alert("❌ Failed to initiate payment. Try again.");
     }
   };
 

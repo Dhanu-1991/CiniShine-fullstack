@@ -26,7 +26,7 @@ const payment = async (req, res) => {
       customer_phone: "9999999999"
     },
     order_meta: {
-      return_url: "https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id={order_id}"
+      return_url: `https://www.cashfree.com/devstudio/preview/pg/web/checkout?order_id=${orderId}`
     }
   };
 
@@ -35,9 +35,10 @@ const payment = async (req, res) => {
     console.log("Payment session created successfully:", response.data);
 
     res.status(200).json({
-      orderId: orderId,
-      paymentUrl: response.data.payment_link,
-    });
+  order_id: orderId,
+  payment_session_id: response.data.payment_session_id, // ✅ required by SDK
+});
+
   } catch (error) {
     console.error("Error creating payment session:", error?.response?.data || error.message);
     res.status(500).json({ error: "Failed to create payment session" });

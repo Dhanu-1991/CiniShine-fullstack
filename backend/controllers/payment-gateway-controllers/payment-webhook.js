@@ -1,14 +1,17 @@
-// backend/controllers/payment-gateway-controllers/payment-webhook.js
+const paymentWebhook = async (req, res) => {
+  console.log("Webhook triggered:", req.body);
 
-const paymentWebhook = (req, res) => {
-  const event = req.body?.event;
-  const order = req.body?.data?.order;
+  const event = req.body.event;
+  const orderId = req.body.data?.order?.order_id;
 
-  console.log("🔔 Webhook event received:", event);
-  console.log("📦 Order Data:", order);
+  if (!event || !orderId) {
+    return res.status(400).json({ error: "Invalid webhook payload" });
+  }
 
-  // TODO: Save the event to your DB or perform logic like status update
+  // Example: Update payment status in DB (you can customize this)
+  console.log(`✅ Webhook Event Received: ${event} for Order: ${orderId}`);
 
+  // Cashfree expects 200 OK to confirm receipt
   res.status(200).send("Webhook received");
 };
 
