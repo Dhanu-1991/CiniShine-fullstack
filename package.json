@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-  "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\""
-},
+    "dev": "concurrently \"npm --prefix backend run dev\" \"npm --prefix frontend run dev\"",
+    "build": "echo 'Frontend is in /frontend. Set build settings in Vercel accordingly.'"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",
