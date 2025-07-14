@@ -2,7 +2,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true, // Optional: if using cookies
+});
 export default function PaymentStatus() {
   const [searchParams] = useSearchParams();
   const orderId = searchParams.get("order_id");
@@ -11,7 +14,7 @@ export default function PaymentStatus() {
   useEffect(() => {
     const verify = async () => {
       try {
-        const res = await axios.post("https://your-backend.com/api/v1/payments/payment-verify", { orderId });
+        const res = await API.post("/api/v1/payments/payment-verify", { orderId });
         setStatus(res.data.order_status || "Unknown");
       } catch (error) {
         console.error("Error verifying payment:", error);

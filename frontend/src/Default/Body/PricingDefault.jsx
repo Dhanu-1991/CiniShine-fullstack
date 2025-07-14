@@ -3,7 +3,10 @@ import { Card, Button, Badge } from "flowbite-react";
 import axios from "axios";
 import { load } from "@cashfreepayments/cashfree-js";
 import { useState, useEffect } from "react";
-
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+  withCredentials: true, // Optional: if using cookies
+});
 export default function PricingDefault() {
   const [cashfree, setCashfree] = useState(null);
 
@@ -22,7 +25,7 @@ export default function PricingDefault() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/v1/payments/payment", { price });
+      const res = await API.post("/api/v1/payments/payment", { price });
 
       if (!res.data?.payment_session_id || !res.data?.order_id) {
         throw new Error("Failed to receive session ID or order ID.");
@@ -31,7 +34,7 @@ export default function PricingDefault() {
       const checkoutOptions = {
   paymentSessionId: res.data.payment_session_id, // ✅ must match backend
   redirectTarget: "_self",
-  returnUrl: `http://localhost:5173/payment-status?order_id=${res.data.order_id}`,
+  returnUrl: `${import.meta.env.VITE_FRONTEND_URL}/payment-status?order_id=${res.data.order_id}`,
 };
 
 
