@@ -1,13 +1,65 @@
 import { Card, Button, Badge } from "flowbite-react";
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { load } from "@cashfreepayments/cashfree-js";
+import { useState, useEffect } from "react";
 
 export default function PricingDefault() {
-    console.log("PricingDefault rendered");
-    const navigate = useNavigate();
+  const [cashfree, setCashfree] = useState(null);
+  const [orderId, setOrderId] = useState("");
 
-    const onClickPricing=()=>{
-      navigate("/signin");
+  useEffect(() => {
+    const initializeSDK = async () => {
+      const cf = await load({ mode: "production" }); // use "production" for live
+      setCashfree(cf);
+    };
+    initializeSDK();
+  }, []);
+
+  const getSessionId = async (price) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/v1/payments/payment", { price });
+      if (res.data?.payment_session_id) {
+        setOrderId(res.data.order_id);
+        return res.data.payment_session_id;
+      } else {
+        throw new Error("Session ID not received");
+      }
+    } catch (error) {
+      console.error("Get session failed:", error);
     }
+  };
+
+  const verifyPayment = async (orderId) => {
+    try {
+      const res = await axios.post("http://localhost:5000/api/v1/payments/payment-verify", { orderId });
+      if (res.data) {
+        alert("✅ Payment Status: " + res.data.order_status);
+      }
+    } catch (error) {
+      console.error("Verification failed:", error);
+    }
+  };
+
+  const onClickPricing = async (price) => {
+    if (!cashfree) {
+      alert("⚠️ Cashfree SDK not initialized yet");
+      return;
+    }
+
+    try {
+      console.log("Initiating payment for price:", price);
+      const sessionId = await getSessionId(price);
+      const checkoutOptions = {
+        paymentSessionId: sessionId,
+        redirectTarget: "_self",
+      };
+
+      await cashfree.checkout(checkoutOptions);
+      await verifyPayment(orderId);
+    } catch (error) {
+      console.error("Payment initiation failed:", error);
+    }
+  };
 
   return (
     <div className="bg-gray-100 mt-20 dark:bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
@@ -24,7 +76,7 @@ export default function PricingDefault() {
             <li>✔ Feature 2</li>
             <li>✔ Limited Access</li>
           </ul>
-          <Button onClick={onClickPricing}>Choose Plan</Button>
+          <Button onClick={() => onClickPricing(499)}>Choose Plan</Button>
         </Card>
 
         {/* Pro Plan */}
@@ -37,7 +89,7 @@ export default function PricingDefault() {
             <li>✔ More Storage</li>
             <li>✔ Support Access</li>
           </ul>
-          <Button color="blue" onClick={onClickPricing}>Choose Plan</Button>
+          <Button color="blue" onClick={() => onClickPricing(999)}>Choose Plan</Button>
         </Card>
 
         {/* Premium Plan */}
@@ -49,7 +101,7 @@ export default function PricingDefault() {
             <li>✔ Priority Support</li>
             <li>✔ Early Access to Jobs</li>
           </ul>
-          <Button color="dark" onClick={onClickPricing}>Choose Plan</Button>
+          <Button color="dark" onClick={() => onClickPricing(1499)}>Choose Plan</Button>
         </Card>
       </div>
     </div>

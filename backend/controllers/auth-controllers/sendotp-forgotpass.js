@@ -1,5 +1,7 @@
-import { saveOtp } from '../services/otpStore.js'
-import { sendOtpToEmail } from '../services/otpServiceEmail.js';
+import { saveOtp } from './services/otpStore.js';
+import { sendOtpToEmail } from './services/otpServiceEmail.js';
+import { sendOtpToPhone } from './services/otpServicePhone.js';
+
 const sendOtp_forgotPass = async (req, res) => {
      const { contact, type } = req.body;
 

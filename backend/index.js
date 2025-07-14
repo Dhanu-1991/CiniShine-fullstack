@@ -3,8 +3,9 @@ import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-import authRouter  from "./routes/authRoutes/authRouter.js"
+import authRouter from "./routes/authRoutes/authRouter.js";
 import errorHandlingMiddleware from "./middlewares/errorHandlingMiddleware.js";
+import router from "./routes/paymentRoutes/cashfree.js";
 
 dotenv.config();
 let app = express();
@@ -16,7 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false}));
 app.use(cookieParser());
 
+
 //Routes
+app.use("/api/v1/payments", router);
 app.use("/api/v1/auth/authRoutes",authRouter)
 app.use(errorHandlingMiddleware);
 

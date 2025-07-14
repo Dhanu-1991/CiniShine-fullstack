@@ -1,7 +1,7 @@
 //sendOtp
-import { saveOtp } from '../services/otpStore.js'
-import { sendOtpToEmail } from '../services/otpServiceEmail.js'; // You must implement these functions
-import { sendOtpToPhone } from '../services/otpServicePhone.js'; // You must implement these functions
+import { saveOtp } from './services/otpStore.js'
+import { sendOtpToEmail } from './services/otpServiceEmail.js'; // You must implement these functions
+import { sendOtpToPhone } from './services/otpServicePhone.js'; // You must implement these functions
 import { validateEmailAddress } from './validate.email.js'; // You must implement this function
 import { detectCommonEmailTypos } from './validate.email.js';
 const sendOtp_signup = async (req, res) => {

@@ -1,4 +1,4 @@
-import {getOtp, deleteOtp } from '../services/otpStore.js';
+import { getOtp, deleteOtp } from './services/otpStore.js';
 const verifyOtp = async (req, res) => {
 
     const {contact,otp} = req.body;

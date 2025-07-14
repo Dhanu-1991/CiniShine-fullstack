@@ -1,4 +1,5 @@
-import User from "../../models/user.model.js";
+import User from "../../../models/user.model.js";
+
 const checkUser = async (req, res, next) => {
     try {
         const { contact } = req.body;
@@ -19,4 +20,5 @@ const checkUser = async (req, res, next) => {
         next(error);
     }
 };
+
 export default checkUser;
