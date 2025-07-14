@@ -5,7 +5,7 @@ import axios from "axios";
 import loaderVideo from "../assets/loader.mp4";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true, // Optional: if using cookies
+  // withCredentials: true, // Optional: if using cookies
 });
 // Validation functions
 function isEmail(value) {

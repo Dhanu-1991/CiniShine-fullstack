@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  withCredentials: true, // Optional: if using cookies
+  // withCredentials: true, // Optional: if using cookies
 });
 export default function AuthHeader({ onMenuToggle }) {
   const [userName, setUserName] = useState("John Doe");
@@ -42,7 +42,7 @@ export default function AuthHeader({ onMenuToggle }) {
         // Redirect after 2 seconds
         setTimeout(() => {
           window.location.href = "/login";
-        }, 2000000);
+        }, 2000);
       }
     }
 
