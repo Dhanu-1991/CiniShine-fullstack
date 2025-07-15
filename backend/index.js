@@ -1,43 +1,37 @@
-// Handle uncaught exceptions globally
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught exception:", err);
-});
-
 import express from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
-
+dotenv.config();
 import authRouter from "./routes/authRoutes/authRouter.js";
 import errorHandlingMiddleware from "./middlewares/errorHandlingMiddleware.js";
 import router from "./routes/paymentRoutes/cashfree.js";
 
-// Load environment variables
-dotenv.config();
-
-const app = express();
-
-// Define allowed origins for CORS
 const allowedOrigins = [
   "http://localhost:5173",
   "https://cini-shine-fullstack-hru4-git-main-dhanu-1991s-projects.vercel.app"
 ];
 
-// CORS configuration
 const corsOptions = {
-  origin: function (origin, callback) {
+  origin(origin, callback) {
+    // if no origin (e.g. mobile apps or curl) or it’s in our whitelist:
     if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
+      // echo back the requesting origin (not “*”)
+      callback(null, origin);
     } else {
       callback(new Error("Not allowed by CORS: " + origin));
     }
   },
-  credentials: false // Set to true only if using cookies
+  credentials: true,               // allow Authorization header
+  exposedHeaders: ["Authorization"] // if you want to read custom headers
 };
 
-// Middlewares
+const app = express();
+
 app.use(cors(corsOptions));
+
+// Middlewares
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

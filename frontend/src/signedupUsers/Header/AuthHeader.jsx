@@ -6,7 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  // withCredentials: true, // Optional: if using cookies
+  withCredentials: true, 
 });
 export default function AuthHeader({ onMenuToggle }) {
   const [userName, setUserName] = useState("John Doe");

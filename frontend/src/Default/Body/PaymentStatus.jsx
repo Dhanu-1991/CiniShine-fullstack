@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-//   withCredentials: true, // Optional: if using cookies
+  withCredentials: true,
 });
 export default function PaymentStatus() {
   const [searchParams] = useSearchParams();

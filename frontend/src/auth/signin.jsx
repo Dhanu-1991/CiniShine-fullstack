@@ -13,7 +13,7 @@ import loaderVideo from "../assets/loader.mp4";
 import { HiCheckCircle, HiExclamationCircle, HiEye, HiEyeOff } from "react-icons/hi";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  // withCredentials: true, // Optional: if using cookies
+  withCredentials: true, 
 });
 export function Signin() {
   const [contact, setContact] = useState("");

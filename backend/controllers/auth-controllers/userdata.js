@@ -4,6 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 export const userData = async (req, res) => {
+  console.log("Fetching user data...");
   try {
     console.log("Verifying token...");
     let token;
@@ -12,6 +13,7 @@ export const userData = async (req, res) => {
       console.log("Token found in headers");
       token = req.headers.authorization.split(" ")[1];
     }
+    console.log("Token:", token);
 
     // ✅ Return immediately if no token
     if (!token) {

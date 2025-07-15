@@ -5,7 +5,7 @@ import { load } from "@cashfreepayments/cashfree-js";
 import { useState, useEffect } from "react";
 const API = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
-  // withCredentials: true, // Optional: if using cookies
+  withCredentials: true, 
 });
 export default function PricingDefault() {
   const [cashfree, setCashfree] = useState(null);
