@@ -42,7 +42,7 @@ export default function AuthHeader({ onMenuToggle }) {
         // Redirect after 2 seconds
         setTimeout(() => {
           window.location.href = "/login";
-        }, 2000000);
+        }, 2000);
       }
     }
 

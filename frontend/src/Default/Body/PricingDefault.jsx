@@ -60,7 +60,7 @@ export default function PricingDefault() {
             <li>✔ Feature 2</li>
             <li>✔ Limited Access</li>
           </ul>
-          <Button onClick={() => onClickPricing(499)}>Choose Plan</Button>
+          <Button onClick={() => onClickPricing(1)}>Choose Plan</Button>
         </Card>
 
         {/* Pro Plan */}
