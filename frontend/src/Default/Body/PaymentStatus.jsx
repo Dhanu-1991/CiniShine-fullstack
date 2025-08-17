@@ -14,7 +14,9 @@ export default function PaymentStatus() {
   useEffect(() => {
     const verify = async () => {
       try {
+        console.log("Verifying payment for orderId:", orderId);
         const res = await API.post("/api/v1/payments/payment-verify", { orderId });
+        console.log("Payment verification response:", res.data);
         setStatus(res.data.order_status || "Unknown");
       } catch (error) {
         console.error("Error verifying payment:", error);
